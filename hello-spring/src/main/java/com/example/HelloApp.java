@@ -1,9 +1,9 @@
 package com.example;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.boot.CommandLineRunner;
 
 @SpringBootApplication
 public class HelloApp {
@@ -13,7 +13,7 @@ public class HelloApp {
     }
 
     @Bean
-    public CommandLineRunner helloWorldRunner() {
-        return args -> System.out.println("Hello World");
+    public CommandLineRunner commandLineRunner() {
+        return args -> System.out.println("Hello AI world");
     }
 }
