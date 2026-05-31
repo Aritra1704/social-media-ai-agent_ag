@@ -1,6 +1,7 @@
 from .universe import UniverseManager
 from .features import FeatureExtractor
 import ollama
+import google.generativeai as genai
 
 class AIScreener:
     def __init__(self):
@@ -8,6 +9,8 @@ class AIScreener:
         self.feature_extractor = FeatureExtractor()
         self.ollama_client = ollama.Client()
         self.ollama_model = 'llama2'
+        self.gemini_client = genai.GenerativeModel('gemini-pro')
+        genai.configure(api_key="YOUR_GEMINI_API_KEY")
         self.universe_manager.refresh_universe()
 
     def run(self, screening_criteria):
@@ -43,5 +46,21 @@ class AIScreener:
 
     def _gemini_ranking(self, instruments):
         print("Gemini is ranking the instruments...")
-        ranked_instruments = sorted(instruments, key=lambda x: x['score'], reverse=True)
+        prompt = "Rank these instruments based on their potential as trading setups: "
+        for instrument in instruments:
+            prompt += f"ID: {instrument['id']}, Name: {instrument['name']}, Score: {instrument['score']},"
+
+        try:
+            gemini_response = self.gemini_client.generate_content(prompt)
+            print(f"Raw Gemini response: {gemini_response}")
+            ranked_ids = [id.strip() for id in gemini_response.split(',') if id.strip()]
+            ranked_instruments = []
+            for instrument_id in ranked_ids:
+                instrument = next((inst for inst in instruments if inst['id'] == instrument_id), None)
+                if instrument:
+                    ranked_instruments.append(instrument)
+        except Exception as e:
+            print(f"Error calling Gemini or parsing response: {e}")
+            ranked_instruments = []
+
         return ranked_instruments
