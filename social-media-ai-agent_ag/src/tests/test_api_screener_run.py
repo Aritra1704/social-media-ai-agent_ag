@@ -1,5 +1,5 @@
 import pytest
-from httpx import AsyncClient
+from fastapi.testclient import AsyncClient
 from fastapi import FastAPI
 from src.web.api import router
 
