@@ -6,7 +6,7 @@ print("Added path:", sys.path[0])
 from trading.screener import AIScreener
 
 def test_screener():
-    os.environ['GOOGLE_API_KEY'] = 'YOUR_GEMINI_API_KEY'
+    
     screener = AIScreener()
     screening_criteria = "stocks with high market capitalization and good growth prospects"
     filtered_instruments = screener.run(screening_criteria)
