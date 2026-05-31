@@ -2,7 +2,6 @@ from .universe import UniverseManager
 from .features import FeatureExtractor
 import ollama
 import google.generativeai as genai_deprecated
-import google.genai as genai
 import os
 import json
 
