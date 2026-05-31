@@ -1,5 +1,5 @@
 import pytest
-from httpx import AsyncClient
+from httpx import ASGICLient
 from fastapi import FastAPI
 from src.web.api import router
 
@@ -7,7 +7,7 @@ from src.web.api import router
 async def client():
     test_app = FastAPI()
     test_app.include_router(router)
-    async with AsyncClient(app=test_app, base_url="http://test") as client:
+    async with ASGICLient(app=test_app, base_url="http://test") as client:
         yield client
 
 async def test_successful_request(client):
