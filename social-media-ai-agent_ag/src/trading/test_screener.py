@@ -1,4 +1,4 @@
-from trading.screener import AIScreener
+from screener import AIScreener
 
 def test_screener():
     screener = AIScreener()
