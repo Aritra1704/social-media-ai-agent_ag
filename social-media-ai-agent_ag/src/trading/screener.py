@@ -2,6 +2,7 @@ from .universe import UniverseManager
 from .features import FeatureExtractor
 import ollama
 import google.generativeai as genai
+import json
 
 class AIScreener:
     def __init__(self):
