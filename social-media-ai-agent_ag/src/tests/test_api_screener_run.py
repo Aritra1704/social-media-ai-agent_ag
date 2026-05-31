@@ -1,10 +1,13 @@
 import pytest
 from httpx import AsyncClient
-from src.web.api import app, run_screener_endpoint
+from fastapi import FastAPI
+from src.web.api import router
 
 @pytest.fixture
 async def client():
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    test_app = FastAPI()
+    test_app.include_router(router)
+    async with AsyncClient(app=test_app, base_url="http://test") as client:
         yield client
 
 async def test_successful_request(client):
