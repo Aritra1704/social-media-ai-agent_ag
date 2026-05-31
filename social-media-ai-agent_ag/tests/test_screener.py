@@ -32,7 +32,7 @@ def test_screener_endpoint(client, mock_universe_manager, mock_ollama_client, mo
         with patch('src.trading.screener.AIScreener._gemini_ranking', return_value={'AAPL': 0.9, 'GOOGL': 0.8}):
             response = client.post("/api/screener/run", json={"criteria": {"growth": ["high"]}})
             assert response.status_code == 200
-            assert response.json() == {'AAPL': 0.9, 'GOOGL': 0.8}
+            assert response.json()['results'] == {'AAPL': 0.9, 'GOOGL': 0.8}
 
 
 def test_screener_endpoint_with_different_criteria(client, mock_universe_manager, mock_ollama_client, mock_gemini_model):
@@ -40,4 +40,4 @@ def test_screener_endpoint_with_different_criteria(client, mock_universe_manager
         with patch('src.trading.screener.AIScreener._gemini_ranking', return_value={'MSFT': 0.85, 'AMZN': 0.95}):
             response = client.post("/api/screener/run", json={"criteria": {"volatility": ["low"]}})
             assert response.status_code == 200
-            assert response.json() == {'MSFT': 0.85, 'AMZN': 0.95}
+            assert response.json()['results'] == {'MSFT': 0.85, 'AMZN': 0.95}
