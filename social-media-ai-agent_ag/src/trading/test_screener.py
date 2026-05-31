@@ -1,4 +1,7 @@
-from screener import AIScreener
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+from trading.screener import AIScreener
 
 def test_screener():
     screener = AIScreener()
