@@ -13,11 +13,11 @@ def test_run_screener_success():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch.object(AIScreener, 'universe_manager', autospec=True) as mock_universe_manager:
+         patch('social_media_ai_agent_ag.src.trading.universe.UniverseManager.get_instrument') as mock_get_instrument:
         
         mock_ollama.return_value = {'response': 'ID1,ID2'}
         mock_gemini.return_value.text = '[\"ID1\", \"ID2\"]'
-        mock_universe_manager.get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
+        mock_get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
 
         screening_criteria = "stocks with high market capitalization and good growth prospects"
         response = client.post("/api/screener/run", json={"screening_criteria": screening_criteria})
@@ -31,11 +31,11 @@ def test_run_screener_empty_criteria():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch.object(AIScreener, 'universe_manager', autospec=True) as mock_universe_manager:
+         patch('social_media_ai_agent_ag.src.trading.universe.UniverseManager.get_instrument') as mock_get_instrument:
         
         mock_ollama.return_value = {'response': ''}
         mock_gemini.return_value.text = '[]'
-        mock_universe_manager.get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
+        mock_get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
 
         screening_criteria = ""
         response = client.post("/api/screener/run", json={"screening_criteria": screening_criteria})
@@ -49,11 +49,11 @@ def test_run_screener_no_ollama_candidates():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch.object(AIScreener, 'universe_manager', autospec=True) as mock_universe_manager:
+         patch('social_media_ai_agent_ag.src.trading.universe.UniverseManager.get_instrument') as mock_get_instrument:
         
         mock_ollama.return_value = {'response': ''}
         mock_gemini.return_value.text = '[]'
-        mock_universe_manager.get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
+        mock_get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
 
         screening_criteria = "stocks with high market capitalization and good growth prospects"
         response = client.post("/api/screener/run", json={"screening_criteria": screening_criteria})
@@ -67,11 +67,11 @@ def test_run_screener_ollama_filters_gemini_reorders():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch.object(AIScreener, 'universe_manager', autospec=True) as mock_universe_manager:
+         patch('social_media_ai_agent_ag.src.trading.universe.UniverseManager.get_instrument') as mock_get_instrument:
         
         mock_ollama.return_value = {'response': 'ID1,ID2'}
         mock_gemini.return_value.text = '[\"ID2\", \"ID1\"]'
-        mock_universe_manager.get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
+        mock_get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
 
         screening_criteria = "stocks with high market capitalization and good growth prospects"
         response = client.post("/api/screener/run", json={"screening_criteria": screening_criteria})
@@ -85,11 +85,11 @@ def test_run_screener_ollama_error():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch.object(AIScreener, 'universe_manager', autospec=True) as mock_universe_manager:
+         patch('social_media_ai_agent_ag.src.trading.universe.UniverseManager.get_instrument') as mock_get_instrument:
         
         mock_ollama.side_effect = Exception("Ollama error")
         mock_gemini.return_value.text = '["ID1", "ID2"]'
-        mock_universe_manager.get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
+        mock_get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
 
         screening_criteria = "stocks with high market capitalization and good growth prospects"
         response = client.post("/api/screener/run", json={"screening_criteria": screening_criteria})
@@ -102,11 +102,11 @@ def test_run_screener_gemini_error():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch.object(AIScreener, 'universe_manager', autospec=True) as mock_universe_manager:
+         patch('social_media_ai_agent_ag.src.trading.universe.UniverseManager.get_instrument') as mock_get_instrument:
         
         mock_ollama.return_value = {'response': 'ID1,ID2'}
         mock_gemini.side_effect = Exception("Gemini error")
-        mock_universe_manager.get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
+        mock_get_instrument.side_effect = lambda instrument_id: {'id': instrument_id, 'name': f'Instrument {instrument_id}'}
 
         screening_criteria = "stocks with high market capitalization and good growth prospects"
         response = client.post("/api/screener/run", json={"screening_criteria": screening_criteria})
