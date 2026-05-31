@@ -6,7 +6,7 @@ print("Added path:", sys.path[0])
 from trading.screener import AIScreener
 from fastapi.testclient import TestClient
 from unittest.mock import patch
-from src.trading.api import app
+from src.web.api import app
 
 def test_run_screener_endpoint():
     client = TestClient(app)
