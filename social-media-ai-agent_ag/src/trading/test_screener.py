@@ -21,8 +21,8 @@ def test_run_screener_success():
         response = client.post("/api/screener/run", json={"screening_criteria": screening_criteria})
 
         assert response.status_code == 200
-        assert 'candidate_setups' in response.json()
-        assert len(response.json()['candidate_setups']) == 2
+        assert 'results' in response.json()
+        assert len(response.json()['results']) == 2
 
 def test_run_screener_empty_criteria():
     client = TestClient(app)
@@ -37,8 +37,8 @@ def test_run_screener_empty_criteria():
         response = client.post("/api/screener/run", json={"screening_criteria": screening_criteria})
 
         assert response.status_code == 200
-        assert 'candidate_setups' in response.json()
-        assert len(response.json()['candidate_setups']) == 0
+        assert 'results' in response.json()
+        assert len(response.json()['results']) == 0
 
 def test_run_screener_no_ollama_candidates():
     client = TestClient(app)
@@ -53,8 +53,8 @@ def test_run_screener_no_ollama_candidates():
         response = client.post("/api/screener/run", json={"screening_criteria": screening_criteria})
 
         assert response.status_code == 200
-        assert 'candidate_setups' in response.json()
-        assert len(response.json()['candidate_setups']) == 0
+        assert 'results' in response.json()
+        assert len(response.json()['results']) == 0
 
 def test_run_screener_ollama_filters_gemini_reorders():
     client = TestClient(app)
@@ -69,8 +69,8 @@ def test_run_screener_ollama_filters_gemini_reorders():
         response = client.post("/api/screener/run", json={"screening_criteria": screening_criteria})
 
         assert response.status_code == 200
-        assert 'candidate_setups' in response.json()
-        assert len(response.json()['candidate_setups']) == 2
+        assert 'results' in response.json()
+        assert len(response.json()['results']) == 2
 
 def test_run_screener_ollama_error():
     client = TestClient(app)
