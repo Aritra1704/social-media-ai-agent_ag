@@ -1,6 +1,6 @@
 import pytest
 from httpx import AsyncClient
-from social-media-ai-agent_ag.src.web.api import app, run_screener_endpoint
+from src.web.api import app, run_screener_endpoint
 
 @pytest.fixture
 async def client():
@@ -23,7 +23,7 @@ async def test_invalid_request_missing_criteria(client):
     assert response.status_code == 422
 
 async def test_screener_run_called_correctly(mocker, client):
-    mock_run_screener = mocker.patch("social-media-ai-agent_ag.src.web.api.screener.run_screener")
+    mock_run_screener = mocker.patch("src.web.api.screener.run_screener")
     criteria = {
         "age": {"min": 18, "max": 30},
         "location": "New York"
