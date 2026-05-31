@@ -1,3 +1,5 @@
+from pydantic import BaseModel
+
 class ScreenerRunRequest(BaseModel):
     """Request to run the screener."""
 
