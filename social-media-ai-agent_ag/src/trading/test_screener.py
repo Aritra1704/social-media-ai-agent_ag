@@ -13,7 +13,7 @@ def test_run_screener_success():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch('trading.universe.UniverseManager') as MockUniverseManager:
+         patch('src.web.api.screener.universe_manager') as MockUniverseManager:
         
         mock_universe_manager = MockUniverseManager.return_value
         mock_universe_manager.get_all_instruments.return_value = [{'id': 'ID1', 'name': 'Instrument 1'}, {'id': 'ID2', 'name': 'Instrument 2'}]
@@ -35,7 +35,7 @@ def test_run_screener_empty_criteria():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch('trading.universe.UniverseManager') as MockUniverseManager:
+         patch('src.web.api.screener.universe_manager') as MockUniverseManager:
         
         mock_universe_manager = MockUniverseManager.return_value
         mock_universe_manager.get_all_instruments.return_value = [{'id': 'ID1', 'name': 'Instrument 1'}, {'id': 'ID2', 'name': 'Instrument 2'}]
@@ -57,7 +57,7 @@ def test_run_screener_no_ollama_candidates():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch('trading.universe.UniverseManager') as MockUniverseManager:
+         patch('src.web.api.screener.universe_manager') as MockUniverseManager:
         
         mock_universe_manager = MockUniverseManager.return_value
         mock_universe_manager.get_all_instruments.return_value = [{'id': 'ID1', 'name': 'Instrument 1'}, {'id': 'ID2', 'name': 'Instrument 2'}]
@@ -79,7 +79,7 @@ def test_run_screener_ollama_filters_gemini_reorders():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch('trading.universe.UniverseManager') as MockUniverseManager:
+         patch('src.web.api.screener.universe_manager') as MockUniverseManager:
         
         mock_universe_manager = MockUniverseManager.return_value
         mock_universe_manager.get_all_instruments.return_value = [{'id': 'ID1', 'name': 'Instrument 1'}, {'id': 'ID2', 'name': 'Instrument 2'}]
@@ -101,7 +101,7 @@ def test_run_screener_ollama_error():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch('trading.universe.UniverseManager') as MockUniverseManager:
+         patch('src.web.api.screener.universe_manager') as MockUniverseManager:
         
         mock_universe_manager = MockUniverseManager.return_value
         mock_universe_manager.get_all_instruments.return_value = [{'id': 'ID1', 'name': 'Instrument 1'}, {'id': 'ID2', 'name': 'Instrument 2'}]
@@ -122,7 +122,7 @@ def test_run_screener_gemini_error():
 
     with patch('ollama.Client.generate') as mock_ollama, \
          patch('google.generativeai.GenerativeModel.generate_content') as mock_gemini, \
-         patch('trading.universe.UniverseManager') as MockUniverseManager:
+         patch('src.web.api.screener.universe_manager') as MockUniverseManager:
         
         mock_universe_manager = MockUniverseManager.return_value
         mock_universe_manager.get_all_instruments.return_value = [{'id': 'ID1', 'name': 'Instrument 1'}, {'id': 'ID2', 'name': 'Instrument 2'}]
