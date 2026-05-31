@@ -1,5 +1,5 @@
-from social_media_ai_agent_ag.src.trading.universe import UniverseManager
-from social_media_ai_agent_ag.src.trading.features import FeatureExtractor
+from src.trading.universe import UniverseManager
+from src.trading.features import FeatureExtractor
 
 class AIScreener:
     def __init__(self):
