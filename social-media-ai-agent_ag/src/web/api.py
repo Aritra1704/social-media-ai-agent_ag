@@ -1,13 +1,15 @@
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-class ScreenerRunRequest(BaseModel):
-    """Request to run the screener."""
+router = APIRouter()
 
-    screening_criteria: str
+class RunScreenerRequest(BaseModel):
+    criteria: dict
 
-
-@app.post("/api/screener/run", response_model=dict)
-async def run_screener(request: ScreenerRunRequest):
-    """Run the screener with the given criteria."""
-    results = screener.run(request.screening_criteria)
-    return {"results": results}
+@router.post("/api/screener/run")
+async def run_screener_endpoint(request: RunScreenerRequest):
+    try:
+        result = screener.run_screener(request.criteria)
+        return {"result": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
