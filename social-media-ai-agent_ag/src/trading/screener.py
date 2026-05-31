@@ -47,21 +47,24 @@ class AIScreener:
 
     def _gemini_ranking(self, instruments):
         print("Gemini is ranking the instruments...")
-        prompt = "Rank these instruments based on their potential as trading setups: "
-        for instrument in instruments:
-            prompt += f"ID: {instrument['id']}, Name: {instrument['name']}, Score: {instrument['score']},"
+        instrument_list_str = ", ".join([f"ID: {inst['id']}, Name: {inst['name']}, Score: {inst['score']}" for inst in instruments])
+        prompt = f"Rank these instruments based on their potential as trading setups: {instrument_list_str}. Return a JSON array of instrument IDs only, e.g., [\"ID1\", \"ID2\", \"ID3\"]"
 
         try:
             gemini_response = self.gemini_client.generate_content(prompt)
-            print(f"Raw Gemini response: {gemini_response}")
-            ranked_ids = [id.strip() for id in gemini_response.split(',') if id.strip()]
+            print(f"Raw Gemini response: {gemini_response.text}")
+            ranked_ids = json.loads(gemini_response.text)
+            
             ranked_instruments = []
             for instrument_id in ranked_ids:
                 instrument = next((inst for inst in instruments if inst['id'] == instrument_id), None)
                 if instrument:
                     ranked_instruments.append(instrument)
+        except json.JSONDecodeError as e:
+            print(f"Error parsing Gemini response JSON: {e}")
+            ranked_instruments = [] # Return empty list on parsing error
         except Exception as e:
-            print(f"Error calling Gemini or parsing response: {e}")
+            print(f"Error calling Gemini API: {e}")
             ranked_instruments = []
 
         return ranked_instruments
