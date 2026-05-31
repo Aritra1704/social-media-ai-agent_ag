@@ -1,7 +1,9 @@
 from .universe import UniverseManager
 from .features import FeatureExtractor
 import ollama
-import google.generativeai as genai
+import google.generativeai as genai_deprecated
+import google.genai as genai
+import os
 import json
 
 class AIScreener:
@@ -10,8 +12,8 @@ class AIScreener:
         self.feature_extractor = FeatureExtractor()
         self.ollama_client = ollama.Client()
         self.ollama_model = 'llama2'
-        self.gemini_client = genai.GenerativeModel('gemini-pro')
-        genai.configure(api_key="YOUR_GEMINI_API_KEY")
+        self.gemini_client = genai_deprecated.GenerativeModel('gemini-pro')
+        genai_deprecated.configure(api_key=os.environ.get('GOOGLE_API_KEY'))
         self.universe_manager.refresh_universe()
 
     def run(self, screening_criteria):
@@ -25,7 +27,7 @@ class AIScreener:
         prompt = f"Screen the following instruments: {instrument_ids} based on the following criteria: {criteria}. Please return a comma-separated list of instrument IDs only, with no additional text."
         
         try:
-            ollama_response = self.ollama_client.generate(prompt, model=self.ollama_model)
+            ollama_response = self.ollama_client.generate(prompt=prompt, model=self.ollama_model)
             print(f"Raw Ollama response: {ollama_response}")
             llm_text_response = ollama_response['response'].strip()
             candidate_ids = [id.strip() for id in llm_text_response.split(',') if id.strip()]
