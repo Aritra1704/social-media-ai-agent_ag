@@ -12,6 +12,7 @@ from pydantic import BaseModel, Field
 
 from src.agent.graph import compile_graph
 from src.agent.state import AgentState, Platform, PostStatus
+from src.trading.screener import AIScreener
 from src.trading.universe import UniverseManager
 from src.trading.features import FeatureExtractor
 
@@ -96,6 +97,7 @@ class SymbolRequest(BaseModel):
 
 universe_manager = UniverseManager()
 feature_extractor = FeatureExtractor()
+screener = AIScreener()
 
 
 @app.get("/api/universe")
@@ -116,6 +118,20 @@ async def extract_features(request: SymbolRequest):
     """Extract features for a given symbol."""
     feature_vector = feature_extractor.extract_features(request.symbol)
     return {"symbol": request.symbol, "features": feature_vector}
+
+
+# Screening API Endpoints
+class ScreeningRequest(BaseModel):
+    """Request to run the screener."""
+
+    criteria: dict
+
+
+@app.post("/api/screener/run", response_model=dict)
+async def run_screener(request: ScreeningRequest):
+    """Run the screener with the given criteria."""
+    results = screener.run(request.criteria)
+    return {"results": results}
 
 
 # API Endpoints
