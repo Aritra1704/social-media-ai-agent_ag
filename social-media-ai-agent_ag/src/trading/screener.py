@@ -1,5 +1,5 @@
-from .universe import UniverseManager
-from .features import FeatureExtractor
+from src.trading.universe import UniverseManager
+from src.trading.features import FeatureExtractor
 import ollama
 
 class AIScreener:
